@@ -4,22 +4,9 @@ import { useEffect, useState } from 'react'
 import Header from '@components/header'
 import { courseExample } from '@data/examples'
 import { dataServices } from '@services/dataServices'
+import {classTime, CourseData}  from '@type/index'
 
-type classTime = Array<{ day: string; start: string; end: string }>
 
-// 받아올 강의 데이터 type, (interface 로 바꿀게요)
-interface CourseData {
-  college: string
-  courseName: string
-  courseCode: string
-  professor: string
-  //음...
-  time: classTime
-  //[{요일 : 화, 시작 : 1, 끝 : 2}, {}]
-  classRoom: string
-  personel: number
-  credit: number //학점
-}
 
 //
 async function getData(
