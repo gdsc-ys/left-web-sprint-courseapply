@@ -5,18 +5,23 @@ import Header from '@components/header'
 import { courseExample } from '@data/examples'
 import { dataServices } from '@services/dataServices'
 
-type CourseData = {
-  college: String
-  courseName: String
-  courseCode: String
-  professor: String
+type classTime = Array<{ day: string; start: string; end: string }>
+
+// 받아올 강의 데이터 type, (interface 로 바꿀게요)
+interface CourseData {
+  college: string
+  courseName: string
+  courseCode: string
+  professor: string
   //음...
-  time: Array<[string, string]>
-  classRoom: String
-  personel: Number
-  credit: Number //학점
+  time: classTime
+  //[{요일 : 화, 시작 : 1, 끝 : 2}, {}]
+  classRoom: string
+  personel: number
+  credit: number //학점
 }
 
+//
 async function getData(
   setLoadingToGetData: (value: boolean) => void,
   setCourseData: (value: Array<CourseData>) => void,
@@ -37,10 +42,6 @@ export default function Main() {
     courseExample,
   ])
   const [loadingToGetData, setLoadingToGetData] = useState<boolean>(false)
-  useEffect(() => {
-    getData(setLoadingToGetData, setCourseData)
-  }, [])
-
   return (
     <div>
       <Header />

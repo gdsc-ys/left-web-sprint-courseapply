@@ -6,8 +6,9 @@ import Header from '@components/header'
 export default function Default() {
   return (
     <div>
-      <Link></Link>
-      <Link></Link>
+      <Link to="/login">
+        <div>login!</div>
+      </Link>
     </div>
   )
 }
