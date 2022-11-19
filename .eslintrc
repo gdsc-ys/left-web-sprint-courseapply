@@ -1,14 +1,37 @@
 {
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["react", "simple-import-sort", "import", "@typescript-eslint"],
   "extends": [
-    "prettier",
-    "airbnb",
-    "airbnb/hooks",
+    "eslint:recommended",
+    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
   "parserOptions": {
     "project": "./tsconfig.json"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "no-unused-vars": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [".*"]
+      }
+    ],
+    "simple-import-sort/imports": [
+      "warn",
+      {
+        "groups": [["^\\u0000"], ["^node:", "^react", "^\\w"], ["^@", "^"]]
+      }
+    ],
+    "simple-import-sort/exports": "warn",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error"
   }
 }

@@ -1,4 +1,5 @@
-const CracoAlias = require('craco-alias')
+/* eslint-disable */
+const CracoAlias = require('craco-alias');
 
 module.exports = {
   plugins: [
@@ -10,4 +11,4 @@ module.exports = {
       },
     },
   ],
-}
+};
