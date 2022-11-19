@@ -10,7 +10,6 @@ import { courseExample } from '@data/examples';
 import { dataServices } from '@services/dataServices';
 import { CourseData } from '@type/index';
 
-//
 async function getData(
   setLoadingToGetData: (value: boolean) => void,
   setCourseData: (value: Array<CourseData>) => void,
