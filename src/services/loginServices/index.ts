@@ -1,6 +1,6 @@
-import axios from 'axios'
-import { HOST_URL } from '@data/url'
+import axios from 'axios';
+import { HOST_URL } from '@data/url';
 
-class BasketServices {}
+class LoginServices {}
 
-export const dataServices = new BasketServices()
+export const dataServices = new LoginServices();
