@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { useEffect, useState } from 'react';
-import './index.css';
+import '@components/filter/index.css';
+
+import { useState } from 'react';
 
 /**
   degreeDict = {
@@ -15,38 +15,31 @@ import './index.css';
 
  */
 
-function setSelectValue() {
-
-}
-
 export default function Filter() {
-	const [curFilter, setCurFilter] = useState({
-		degree: '',
-		department: '',
-		major: '',
-		grade: '',
-	});
+  const [curFilter, setCurFilter] = useState({
+    degree: '',
+    department: '',
+    major: '',
+    grade: '',
+  });
 
-	const [filterCategory, setFilterCategory] = useState({});
+  const [filterCategory, setFilterCategory] = useState({});
 
-	return (
-		<div>
-			<select className="degree"
-      onChange = {(e) => {
-        
-      }}>
-				<option value="null">선택하세요</option>
-				<option value="학부">학부</option>
-				<option value="대학원">대학원</option>
-			</select>
-			<select className="department">{}</select>
-			<select className="major"></select>
-			<select className="grade">
-				<option value="1">1학년</option>
-				<option value="2">2학년</option>
-				<option value="3">3학년</option>
-				<option value="4">4학년</option>
-			</select>
-		</div>
-	);
+  return (
+    <div>
+      <select className="degree">
+        <option value="null">선택하세요</option>
+        <option value="학부">학부</option>
+        <option value="대학원">대학원</option>
+      </select>
+      <select className="department">{}</select>
+      <select className="major"></select>
+      <select className="grade">
+        <option value="1">1학년</option>
+        <option value="2">2학년</option>
+        <option value="3">3학년</option>
+        <option value="4">4학년</option>
+      </select>
+    </div>
+  );
 }

@@ -1,7 +1,6 @@
-import * as React from 'react'
-import './index.css'
-import { Link } from 'react-router-dom'
-import Header from '@components/header'
+import '@pages/default/index.css';
+
+import { Link } from 'react-router-dom';
 
 export default function Default() {
   return (
@@ -10,5 +9,5 @@ export default function Default() {
         <div>login!</div>
       </Link>
     </div>
-  )
+  );
 }

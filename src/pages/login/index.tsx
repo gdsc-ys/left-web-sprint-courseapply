@@ -1,6 +1,5 @@
-import * as React from 'react'
-import './index.css'
+import '@pages/login/index.css';
 
 export default function Login() {
-  return <div></div>
+  return <div></div>;
 }

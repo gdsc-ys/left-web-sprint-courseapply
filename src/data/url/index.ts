@@ -1,1 +1,1 @@
-export const HOST_URL = 'http://www.google.com'
+export const HOST_URL = 'http://www.google.com';

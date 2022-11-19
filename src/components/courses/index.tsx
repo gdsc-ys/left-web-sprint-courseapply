@@ -1,6 +1,5 @@
-import * as React from 'react';
-import './index.css';
+import '@components/courses/index.css';
 
 export default function Courses() {
-	return <div></div>;
+  return <div></div>;
 }
