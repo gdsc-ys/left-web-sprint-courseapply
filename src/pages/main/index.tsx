@@ -10,16 +10,14 @@ import Header from '@components/header';
 import { courses as courseExample } from '@data/examples';
 
 export default function Main() {
-  const [courseData, setCourseData] = useState<Course[]>();
-  // const [loadingToGetData, setLoadingToGetData] = useState<boolean>(false);
-  // const [loadingToApply, setLoadingToApply] = useState<boolean>(false);
+  const [courses, setCourses] = useState<Course[]>();
 
   const getCourses = useCallback(async () => {
-    setCourseData(undefined);
+    setCourses(undefined);
 
     const courses = courseExample;
 
-    setCourseData(courses);
+    setCourses(courses);
   }, []);
 
   useEffect(() => {
@@ -29,10 +27,15 @@ export default function Main() {
   return (
     <div>
       <Header />
-      <Filter />
-      <Courses />
-      <Basket />
-      {!courseData && <div>loading...</div>}
+      {courses ? (
+        <>
+          <Filter />
+          <Courses />
+          <Basket />
+        </>
+      ) : (
+        <div>loading...</div>
+      )}
     </div>
   );
 }
