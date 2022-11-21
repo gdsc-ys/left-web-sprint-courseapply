@@ -1,36 +1,46 @@
-import React from 'react';
-import { useGlobalFilter, useSortBy, useTable } from 'react-table';
+import React, { useMemo } from 'react';
+import { useTable } from 'react-table';
 
-import { Course } from '@/interfaces/Course';
+import { courses } from '@/data/examples/index';
+import { columnData } from '@components/basket/basketcolumns';
 
-function BasketTable(columns: any, data: Course[]) {
+export default function BasketTable() {
+  const columns = useMemo(() => columnData, []);
+
+  const data1 = useMemo(() => courses, []);
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useGlobalFilter, useSortBy);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    useTable({ columns, data1 });
 
   return (
     <table {...getTableProps()}>
       <thead>
         {headerGroups.map((headerGroup) => (
-          <tr key={id}{...headerGroup.getHeaderGroupProps()}>
+          // eslint-disable-next-line react/jsx-key
+          <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
+              // eslint-disable-next-line react/jsx-key
               <th {...column.getHeaderProps()}>{column.render('Header')}</th>
             ))}
           </tr>
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
+        {rows.map((row: any) => {
           prepareRow(row);
           return (
+            // eslint-disable-next-line react/jsx-key
             <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => (
-                <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+              {row.cells.map((cell: any) => (
+                // eslint-disable-next-line react/jsx-key
+                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               ))}
-             </tr>
+            </tr>
           );
         })}
       </tbody>
     </table>
   );
 }
-export default BasketTable;
