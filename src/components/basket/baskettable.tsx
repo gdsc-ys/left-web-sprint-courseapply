@@ -6,13 +6,12 @@ import { columnData } from '@components/basket/basketcolumns';
 
 export default function BasketTable() {
   const columns = useMemo(() => columnData, []);
-
-  const data1 = useMemo(() => courses, []);
+  const data = useMemo(() => courses, []);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    useTable({ columns, data1 });
+    useTable({ columns, data });
 
   return (
     <table {...getTableProps()}>
