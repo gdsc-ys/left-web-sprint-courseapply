@@ -3,10 +3,36 @@ import { useTable } from 'react-table';
 
 import { courses } from '@/data/examples/index';
 import { columnData } from '@components/basket/basketcolumns';
+import id from '@components/courses/index';
 
 export default function BasketTable() {
+  const courses1 = [
+    {
+      id: 'CSI1',
+      college: '공과대학',
+      name: '데이터베이스',
+      professor: '윤강석',
+      times: 'MON 2-4 WED 2-4',
+      classroom: '공A999',
+      personnel: 20,
+      credit: 3,
+    },
+    {
+      id: 'CSI2',
+      college: '공과대학',
+      name: '웹',
+      professor: '윤강석',
+      times: 'MON 2-4 WED 2-4',
+      classroom: '공A999',
+      personnel: 20,
+      credit: 3,
+    },
+  ];
+  const dataId = String(id);
+  const index = courses.findIndex((element) => element.id == dataId);
+  const courseData = courses[index];
   const columns = useMemo(() => columnData, []);
-  const data = useMemo(() => courses, []);
+  const data = useMemo(() => courses1, []);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -27,12 +53,12 @@ export default function BasketTable() {
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map((row: any) => {
+        {rows.map((row) => {
           prepareRow(row);
           return (
             // eslint-disable-next-line react/jsx-key
             <tr {...row.getRowProps()}>
-              {row.cells.map((cell: any) => (
+              {row.cells.map((cell) => (
                 // eslint-disable-next-line react/jsx-key
                 <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
               ))}
