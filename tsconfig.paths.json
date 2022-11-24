@@ -8,7 +8,7 @@
       "@interfaces/*": ["src/interfaces/*"],
       "@pages/*": ["src/pages/*"],
       "@styles/*": ["src/styles/*"],
-      "@utils/*": ["src/utils/*"]
+      "@apis/*": ["src/apis/*"]
     }
   }
 }
