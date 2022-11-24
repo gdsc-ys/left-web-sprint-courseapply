@@ -16,11 +16,18 @@ export const getFilters = async (): Promise<filters> => {
  * 필터에 맞는 강의 받아오기
  */
 
+
 export const getCourses = async (
-  filterTosend: filterToSend,
+  curFilter : filterToSend,
 ): Promise<Course[]> => {
+  const keys  = Object.keys(curFilter) as Array<keyof typeof curFilter>
+  keys.forEach((key) => {
+    if (curFilter[key] === 'null') {
+        return null
+    }
+  })
   const response = await axios.get<Course[]>(`${HOST_URL}/course`, {
-    params: { filterTosend },
+    params: { curFilter },
   });
   return response.data;
 };

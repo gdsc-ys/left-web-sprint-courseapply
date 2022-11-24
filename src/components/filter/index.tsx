@@ -18,7 +18,7 @@ import { category, filters, filterToSend } from '@interfaces/filter';
 
  */
 
-export default function Filter() {
+export default function Filter({ setCourses }) {
   const [courseFilter, setCourseFilter] = useState<null | filters>(
     exampleFilters,
   );
@@ -128,8 +128,12 @@ export default function Filter() {
       </select>
       <button
         type="submit"
-        onClick={() => {
-          getCourses(curFilter);
+        onClick={async () => {
+          const response = await getCourses(curFilter);
+          if (response === null) {
+            alert('rerererere');
+          }
+          setCourses(response);
         }}
       ></button>
     </div>

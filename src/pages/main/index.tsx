@@ -29,7 +29,7 @@ export default function Main() {
       <Header />
       {courses ? (
         <>
-          <Filter />
+          <Filter setCourses={setCourses} />
           <Courses />
           <Basket />
         </>

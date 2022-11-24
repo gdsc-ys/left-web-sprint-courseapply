@@ -1,56 +1,36 @@
 import '@components/apply/index.css';
-import {useTable, useRowSelect} from 'react-table'
-import {useState, useEffect} from 'react' 
+import { useTable, useRowSelect } from 'react-table';
+import { useState, useEffect, useMemo } from 'react';
+import { stringify } from 'querystring';
 
+import { Course } from '@/interfaces/Course';
 /**
  * 신청 목록 리스트
  */
 
 export default function Apply({}) {
-    return <div></div>
+  const columns = useMemo(() => {
+    return [
+      { header: '학부', accessor: 'college' },
+      { header: '과목명', accessor: 'name' },
+      { header: '학정번호', accessor: 'id' },
+      { header: '교수명', accessor: 'professor' },
+      { header: '강의 시간', accessor: 'times' },
+      { header: '강의실', accessor: 'classroom' },
+      { header: '정원', accessor: 'personnel' },
+      { header: '학점', accessor: 'credit' },
+    ];
+  }, []);
+  const [data, setData] = useState<Course[]>([]);
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-    selectedFlatRows,
-    toggleRowSelected,
   } = useTable(
-    { columns, data, defaultColumn },
-    useRowSelect,
-    (hooks) => {
-      hooks.allColumns.push((columns) => [
-        // Let's make a column for selection
-        {
-          id: 'selection',
-          disableResizing: true,
-          minWidth: 35,
-          width: 35,
-          maxWidth: 35,
-          Header: ({ getToggleAllRowsSelectedProps }) => (
-            <div>
-              <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-            </div>
-          ),
-          Cell: ({ row }) => (
-            <div>
-              <IndeterminateCheckbox
-                {...row.getToggleRowSelectedProps()}
-                selectedFlatRows={selectedFlatRows}
-                setContainersToDelete={setContainersToDelete}
-              />
-            </div>
-          ),
-        },
-        ...columns,
-      ])
-      hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
-        // fix the parent group of the selection button to not be resizable
-        const selectionGroupHeader = headerGroups[0].headers[0]
-        selectionGroupHeader.canResize = false
-      })
-    },
+    { columns, data },
+    /** 
     (hooks) => {
       hooks.allColumns.push((columns) => [
         ...columns,
@@ -62,6 +42,7 @@ export default function Apply({}) {
           maxWidth: 80,
           Header: () => <div>{'Get Details'}</div>,
           Cell: ({ row }) => {
+            console.log(row)
             return (
               <div>
                 <GetContainerDetail />
@@ -70,34 +51,22 @@ export default function Apply({}) {
           },
         },
       ])
-      hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
-        const curLength = Object.keys(headerGroups[0].headers).length
-        const selectionGroupHeader = headerGroups[0].headers[curLength - 1]
-        selectionGroupHeader.canResize = false
-      })
-    },
-  )
-
-  useEffect(() => {
-    setContainersToDelete(
-      selectedFlatRows.map((comp) => {
-        return comp.original['containerId']
-      }),
-    )
-  }, [selectedFlatRows])
-
+    },*/
+  );
   return (
     <div className="">
-      <table className = "table"
+      <table
+        className="table"
         {...getTableProps({
           style: {
             border: 0,
           },
         })}
       >
-        <div className = "table-head">
+        <div className="table-head">
           {headerGroups.map((headerGroup) => (
-            <div className= "head-row"
+            <div
+              className="head-row"
               {...headerGroup.getHeaderGroupProps({
                 style: {
                   border: 0,
@@ -105,7 +74,8 @@ export default function Apply({}) {
               })}
             >
               {headerGroup.headers.map((column) => (
-                <div className="thead"
+                <div
+                  className="thead"
                   {...column.getHeaderProps({
                     style: {
                       border: 0,
@@ -129,19 +99,17 @@ export default function Apply({}) {
                   })}
                 >
                   {column.render('Header')}
-                  {column.canResize && (
-                    <Resizer {...column.getResizerProps()} />
-                  )}
                 </div>
               ))}
             </div>
           ))}
         </div>
-        <div  className = "tableBody" {...getTableBodyProps()}>
+        <div className="tableBody" {...getTableBodyProps()}>
           {rows.map((row) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
-              <div className="trow"
+              <div
+                className="trow"
                 {...row.getRowProps({
                   style: {
                     width: '2300px',
@@ -151,28 +119,22 @@ export default function Apply({}) {
                     height: '40px',
                   },
                 })}
-                onClick={() => {
-                  row.toggleRowSelected(!row.isSelected)
-                }}
               >
                 {row.cells.map((cell) => (
                   <div
-                  className="tdata"
+                    className="tdata"
                     {...cell.getCellProps({
-                      style: {
-                        
-                      },
+                      style: {},
                     })}
                   >
                     {cell.render('Cell')}
                   </div>
                 ))}
               </div>
-            )
+            );
           })}
         </div>
-      </div>
+      </table>
     </div>
-
-  return <div></div>;
+  );
 }
