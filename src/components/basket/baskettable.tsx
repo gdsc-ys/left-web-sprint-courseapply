@@ -3,7 +3,7 @@ import { useTable } from 'react-table';
 
 import { courses } from '@/data/examples/index';
 import { columnData } from '@components/basket/basketcolumns';
-import id from '@components/courses/index';
+import Courses from '@components/courses/index';
 
 export default function BasketTable() {
   const courses1 = [
@@ -28,9 +28,12 @@ export default function BasketTable() {
       credit: 3,
     },
   ];
-  const dataId = String(id);
-  const index = courses.findIndex((element) => element.id == dataId);
-  const courseData = courses[index];
+  console.log(Courses);
+  //const dataId = Courses;
+  //const index = courses.findIndex((element) => element.id == dataId);
+  //const courseData = courses[index];
+  //console.log(courseData);
+  console.log('aaaa');
   const columns = useMemo(() => columnData, []);
   const data = useMemo(() => courses1, []);
 
