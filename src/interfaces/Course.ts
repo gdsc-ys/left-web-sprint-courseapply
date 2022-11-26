@@ -1,8 +1,8 @@
 import { DayOfWeek } from '@interfaces/Date';
 
 export enum Degree {
-  UNDERGRADUATE = '대학원',
-  GRADUATE = '학부',
+  UNDERGRADUATE = '학부',
+  GRADUATE = '대학원',
 }
 
 export interface CourseTime {
