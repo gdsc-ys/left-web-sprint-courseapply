@@ -11,6 +11,8 @@ import { Course } from '@interfaces/Course';
 
 export default function Main() {
   const [courses, setCourses] = useState<Course[]>();
+  const [preferredCourses, setPreferredCourses] = useState<Course['id'][]>();
+  const [appliedCourses, setAppliedCourses] = useState<Course[]>();
 
   const getCourses = useCallback(async () => {
     setCourses(undefined);
