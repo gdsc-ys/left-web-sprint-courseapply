@@ -1,5 +1,5 @@
-import { Course } from '@/interfaces/Course';
-import { DayOfWeek } from '@/interfaces/Date';
+import { Course } from '@interfaces/Course';
+import { DayOfWeek } from '@interfaces/Date';
 
 export const courses: Course[] = [
   {

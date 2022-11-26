@@ -1,4 +1,4 @@
-import { Course } from '@/interfaces/Course';
+import { Course } from '@interfaces/Course';
 
 /**
  * 강의 목록 가져오기
