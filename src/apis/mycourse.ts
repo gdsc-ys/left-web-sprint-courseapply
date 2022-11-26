@@ -4,13 +4,20 @@ import { HOST_URL } from '@/data/url';
 import { Course } from '@/interfaces/Course';
 
 /**
+ * 신청 내역
+ */
+export type GetAppliedCoursesRequest = void;
+
+export interface GetAppliedCoursesResponse extends Array<Course> {}
+
+/**
  * 수강 신청
  */
-interface ApplyRequest {
+export interface ApplyRequest {
   courseId: string;
 }
 
-type ApplyResponse = Course[];
+export type ApplyResponse = Course[];
 
 export const apply = async (course: ApplyRequest): Promise<ApplyResponse> => {
   const response = await axios.post<ApplyResponse>(
@@ -24,11 +31,11 @@ export const apply = async (course: ApplyRequest): Promise<ApplyResponse> => {
 /**
  * 수강 취소
  */
-interface WithdrawRequest {
+export interface WithdrawRequest {
   courseId: string;
 }
 
-type WithdrawResponse = Course[];
+export type WithdrawResponse = Course[];
 
 export const withdraw = async ({
   courseId,
