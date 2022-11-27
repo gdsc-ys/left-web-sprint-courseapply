@@ -4,7 +4,7 @@
     "node": true
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "simple-import-sort", "import", "@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "import", "simple-import-sort", "react"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -15,7 +15,6 @@
     "project": "./tsconfig.json"
   },
   "rules": {
-    "react/react-in-jsx-scope": "off",
     "no-unused-vars": "off",
     "no-restricted-imports": [
       "error",
@@ -23,6 +22,10 @@
         "patterns": [".*"]
       }
     ],
+    "@typescript-eslint/no-empty-interface": "off",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
     "simple-import-sort/imports": [
       "warn",
       {
@@ -30,8 +33,6 @@
       }
     ],
     "simple-import-sort/exports": "warn",
-    "import/first": "error",
-    "import/newline-after-import": "error",
-    "import/no-duplicates": "error"
+    "react/react-in-jsx-scope": "off"
   }
 }
