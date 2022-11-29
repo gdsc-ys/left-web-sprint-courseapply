@@ -26,12 +26,29 @@ export default function Main() {
     getCourses();
   }, []);
 
+  const savedBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
+
+  const [basket, setBasket] = useState<string[]>(savedBasket);
+
+  const handleAddBasket = (courseId: string) => {
+    const duplicatedCourse = basket.find((course) => course === courseId);
+
+    if (duplicatedCourse) {
+      alert('이미 존재하는 강의입니다');
+      return;
+    }
+
+    const newBasket = [...basket, courseId];
+    localStorage.setItem('basket', JSON.stringify(newBasket));
+    setBasket(newBasket);
+  };
+
   return (
     <div>
       <Header />
       <Filter />
-      <Courses />
-      <Basket />
+      <Courses handleAddBasket={handleAddBasket} />
+      <Basket basket={basket} />
       {!courseData && <div>loading...</div>}
     </div>
   );

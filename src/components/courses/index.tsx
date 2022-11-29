@@ -1,20 +1,17 @@
 import '@components/courses/index.css';
 
-import { courses } from '@/data/examples';
-import { useState } from 'react';
+interface Props {
+  handleAddBasket: (courseId: string) => void;
+}
 
-export default function Courses() {
-  const [courseId, setCourseID] = useState('');
-  const handleClick = (param: string) => {
-    setCourseID(param);
-  };
+export default function Courses({ handleAddBasket }: Props) {
   return (
     <div>
       <span>CSI1</span>
-      <button onClick={() => handleClick('CSI1')}>To Cart</button>
+      <button onClick={() => handleAddBasket('CSI1')}>To Cart</button>
       <br />
       <span>CSI2</span>
-      <button onClick={() => handleClick('CSI2')}>To Cart</button>
+      <button onClick={() => handleAddBasket('CSI2')}>To Cart</button>
     </div>
   );
 }
