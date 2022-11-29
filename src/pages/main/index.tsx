@@ -2,24 +2,24 @@ import '@pages/main/index.css';
 
 import { useCallback, useEffect, useState } from 'react';
 
-import { Course } from '@/interfaces/Course';
 import Basket from '@components/basket';
 import Courses from '@components/courses';
 import Filter from '@components/filter';
 import Header from '@components/header';
 import { courses as courseExample } from '@data/examples';
+import { Course } from '@interfaces/Course';
 
 export default function Main() {
-  const [courseData, setCourseData] = useState<Course[]>();
-  // const [loadingToGetData, setLoadingToGetData] = useState<boolean>(false);
-  // const [loadingToApply, setLoadingToApply] = useState<boolean>(false);
+  const [courses, setCourses] = useState<Course[]>();
+  const [preferredCourses, setPreferredCourses] = useState<Course['id'][]>();
+  const [appliedCourses, setAppliedCourses] = useState<Course[]>();
 
   const getCourses = useCallback(async () => {
-    setCourseData(undefined);
+    setCourses(undefined);
 
     const courses = courseExample;
 
-    setCourseData(courses);
+    setCourses(courses);
   }, []);
 
   useEffect(() => {
@@ -46,10 +46,15 @@ export default function Main() {
   return (
     <div>
       <Header />
-      <Filter />
-      <Courses handleAddBasket={handleAddBasket} />
-      <Basket basket={basket} />
-      {!courseData && <div>loading...</div>}
+      {courses ? (
+        <>
+          <Filter />
+          <Courses handleAddBasket={handleAddBasket} />
+          <Basket basket={basket} />
+        </>
+      ) : (
+        <div>loading...</div>
+      )}
     </div>
   );
 }
