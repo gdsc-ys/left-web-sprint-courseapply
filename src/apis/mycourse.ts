@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import { HOST_URL } from '@data/url';
 import { Course } from '@interfaces/Course';
-
 /**
  * 수강 신청
  */

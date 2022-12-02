@@ -2,6 +2,7 @@ import '@pages/main/index.css';
 
 import { useCallback, useEffect, useState } from 'react';
 
+import Apply from '@components/apply';
 import Basket from '@components/basket';
 import Courses from '@components/courses';
 import Filter from '@components/filter';
@@ -12,7 +13,7 @@ import { Course } from '@interfaces/Course';
 export default function Main() {
   const [courses, setCourses] = useState<Course[]>();
   const [preferredCourses, setPreferredCourses] = useState<Course['id'][]>();
-  const [appliedCourses, setAppliedCourses] = useState<Course[]>();
+  const [appliedCourses, setAppliedCourses] = useState<Course[]>([]);
 
   const getCourses = useCallback(async () => {
     setCourses(undefined);
@@ -31,9 +32,13 @@ export default function Main() {
       <Header />
       {courses ? (
         <>
-          <Filter />
+          <Filter setCourses={setCourses} />
           <Courses />
           <Basket />
+          <Apply
+            appliedCourses={appliedCourses}
+            setAppliedCourses={setAppliedCourses}
+          />
         </>
       ) : (
         <div>loading...</div>

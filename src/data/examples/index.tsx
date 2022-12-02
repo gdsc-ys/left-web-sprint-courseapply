@@ -33,3 +33,17 @@ export const courses: Course[] = [
     credit: 3,
   },
 ];
+
+const degreeDict = {
+  학부: ['이과대학', '공과대학'],
+  대학원: ['음'],
+};
+const collegeDict = {
+  이과대학: ['공통', '물리학과', '수학과', '천문우주학과', '대기과학과'],
+  공과대학: ['공통', '전기전자공학', '도시공학', '신소재공학과'],
+};
+
+export const exampleFilters = {
+  degreeDict: degreeDict,
+  collegeDict: collegeDict,
+};
