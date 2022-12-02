@@ -2,6 +2,9 @@ import React, { useMemo } from 'react';
 import { useTable } from 'react-table';
 
 import { columnData } from '@components/basket/basketcolumns';
+import { courses } from '@data/examples';
+import { Course } from '@/interfaces/Course';
+import { CourseForTable } from '@/interfaces/Table';
 
 interface Props {
   basket: string[];
@@ -31,6 +34,28 @@ export default function Basket({ basket }: Props) {
     },
   ];
   console.log(basket);
+
+  const filteredCourse: Course[] = [];
+  for (let i = 0; i < basket.length; i++) {
+    for (let j = 0; j < courses.length; j++) {
+      if (basket[i] === courses[j].id) {
+        filteredCourse.push(courses[j]);
+      }
+    }
+  }
+  console.log(filteredCourse);
+
+  const basketTableCourses: CourseForTable[] = [];
+  for (let i = 0; i < filteredCourse.length; i++) {
+    let courseTime = ' ';
+    for (let j = 0; j < filteredCourse[i].times.length; j++) {
+      courseTime += filteredCourse[i].times[j].dayOfWeek;
+    }
+  }
+  // const toString = arrayName.reduce((acc, cur) => {
+  //   acc += `${cur.id1_in_array}${cur.id2_in_array}${cur.id3_in_array}`;
+  //   return acc;
+  // });
   //const index = courses.findIndex((element) => element.id == props.courseId);
   //const courseData = courses[index];
   //console.log(courseData?.times);

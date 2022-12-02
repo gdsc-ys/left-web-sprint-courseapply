@@ -4,8 +4,16 @@ export const columnData = [
     Header: 'ID',
   },
   {
+    accessor: 'degree',
+    Header: 'Degree',
+  },
+  {
     accessor: 'college',
     Header: 'College',
+  },
+  {
+    accessor: 'major',
+    Header: 'Major',
   },
   {
     accessor: 'name',
