@@ -1,5 +1,9 @@
 export const columnData = [
   {
+    accessor: 'select',
+    Header: 'Select',
+  },
+  {
     accessor: 'id',
     Header: 'ID',
   },
@@ -38,5 +42,13 @@ export const columnData = [
   {
     accessor: 'credit',
     Header: 'Credit',
+  },
+  {
+    accessor: 'apply',
+    Header: 'Apply',
+  },
+  {
+    accessor: 'delete',
+    Header: 'Delete',
   },
 ];
