@@ -7,7 +7,6 @@ import { CourseForTable } from '@interfaces/Table';
 import { Course } from '@interfaces/Course';
 
 import WithdrawButton from '@components/apply/withdrawButton';
-import { HookCallbacks } from 'async_hooks';
 import { GetCoursesRequest } from '@/apis/course';
 import { WithdrawRequest } from '@/apis/mycourse';
 //import WithdrawButton from './applyButton';
@@ -41,14 +40,17 @@ export default function Apply({
         times: timesToString,
       };
     });
+    console.log(newCourses);
     setData(newCourses);
-  });
+  }, []);
 
   const columns = useMemo<Column<CourseForTable>[]>(() => {
     return [
       { Header: '학정번호', accessor: 'id' },
-      { Header: '학부', accessor: 'college' },
       { Header: '과목명', accessor: 'name' },
+      { Header: '학위', accessor: 'degree' },
+      { Header: '학부', accessor: 'college' },
+      { Header: '전공', accessor: 'major' },
       { Header: '교수명', accessor: 'professor' },
       { Header: '강의 시간', accessor: 'times' },
       { Header: '강의실', accessor: 'classroom' },
@@ -63,12 +65,12 @@ export default function Apply({
       (hooks: Hooks<CourseForTable>) => {
         hooks.allColumns.push((columns) => [
           {
-            id: 'getDetails',
+            id: 'withdraw',
             disableResizing: true,
             minWidth: 100,
             width: 100,
             maxWidth: 100,
-            Header: () => <div>{''}</div>,
+            Header: () => <div>{'취소'}</div>,
             Cell: ({ row }: CellProps<CourseForTable>) => {
               return (
                 <WithdrawButton
@@ -88,15 +90,20 @@ export default function Apply({
         className="table"
         {...getTableProps({
           style: {
-            border: 0,
+            width: '90%',
+            border: '1px solid rgb(200, 200, 200)',
+            borderCollapse: 'collapse',
           },
         })}
       >
         <thead className="table-head">
           {headerGroups.map((headerGroup: HeaderGroup<CourseForTable>) => {
             const { key, ...restHeaderGroupProps } =
-              headerGroup.getHeaderGroupProps();
-            console.log(restHeaderGroupProps);
+              headerGroup.getHeaderGroupProps({
+                style: {
+                  border: '1px solid rgb(200, 200, 200)',
+                },
+              });
             return (
               <tr className="head-row" key={key} {...restHeaderGroupProps}>
                 {headerGroup.headers.map((column) => {

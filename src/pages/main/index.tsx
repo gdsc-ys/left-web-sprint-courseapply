@@ -21,6 +21,7 @@ export default function Main() {
     const courses = courseExample;
 
     setCourses(courses);
+    setAppliedCourses(courses);
   }, []);
 
   useEffect(() => {
