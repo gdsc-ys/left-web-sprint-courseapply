@@ -19,13 +19,13 @@ export default function Apply({
   appliedCourses,
   setAppliedCourses,
 }: {
-  appliedCourses: Course[];
-  setAppliedCourses: (appliedCourses: Course[]) => void;
+  appliedCourses: Course[] | undefined;
+  setAppliedCourses: (appliedCourses: Course[] | undefined) => void;
 }) {
   const [data, setData] = useState<CourseForTable[]>([]);
 
   useEffect(() => {
-    const newCourses = appliedCourses.map((course: Course) => {
+    const newCourses = appliedCourses?.map((course: Course) => {
       const timesToString = course.times.reduce((acc, cur, idx) => {
         acc += `[${cur.dayOfWeek.slice(0, 1)}${cur.startPeriod},${
           cur.endPeriod
@@ -40,8 +40,9 @@ export default function Apply({
         times: timesToString,
       };
     });
-    console.log(newCourses);
-    setData(newCourses);
+    if (newCourses) {
+      setData(newCourses);
+    }
   }, []);
 
   const columns = useMemo<Column<CourseForTable>[]>(() => {

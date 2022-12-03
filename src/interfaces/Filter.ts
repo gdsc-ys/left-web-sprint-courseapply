@@ -10,10 +10,10 @@ export enum CategoryPick {
 
 export interface Category {
   degree: Array<CategoryPick | Degree>;
-  college: string[];
-  major: string[];
+  colleges: string[];
+  majors: string[];
 }
-
+/** 
 export interface DegreeDict {
   [key: string]: string[];
 }
@@ -21,10 +21,10 @@ export interface DegreeDict {
 export interface CollegeDict {
   [key: string]: string[];
 }
-
+*/
 export interface Filters {
-  degreeDict: DegreeDict;
-  collegeDict: CollegeDict;
+  majors: string[];
+  colleges: string[];
 }
 
 export interface FilterToSend

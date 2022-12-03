@@ -7,14 +7,19 @@ import Basket from '@components/basket';
 import Courses from '@components/courses';
 import Filter from '@components/filter';
 import Header from '@components/header';
+
+import { getCourses as getCourse } from '@apis/course';
+import { getAppliedCourses as getAppliedCourse } from '@apis/mycourse';
+
 import { courses as courseExample } from '@data/examples';
 import { Course } from '@interfaces/Course';
 
 export default function Main() {
-  const [courses, setCourses] = useState<Course[]>();
+  const [courses, setCourses] = useState<Course[]>([]);
   const [preferredCourses, setPreferredCourses] = useState<Course['id'][]>();
-  const [appliedCourses, setAppliedCourses] = useState<Course[]>([]);
+  const [appliedCourses, setAppliedCourses] = useState<Course[]>();
 
+  /** 
   const getCourses = useCallback(async () => {
     setCourses(undefined);
 
@@ -26,6 +31,19 @@ export default function Main() {
 
   useEffect(() => {
     getCourses();
+  }, []);
+ */
+
+  const getAppliedCourses = useCallback(async () => {
+    setAppliedCourses(undefined);
+
+    const courses = await getAppliedCourse();
+
+    setAppliedCourses(courses);
+  }, []);
+
+  useEffect(() => {
+    getAppliedCourse();
   }, []);
 
   return (

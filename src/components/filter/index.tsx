@@ -1,9 +1,11 @@
 import '@components/filter/index.css';
 
+import axios from 'axios';
+
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { getCourses } from '@apis/course';
+import { getCollegesAndMajors, getCourses } from '@apis/course';
 import { exampleFilters } from '@data/examples';
 import { Course, Degree } from '@interfaces/Course';
 import {
@@ -29,9 +31,7 @@ import { SlMagnifier } from 'react-icons/sl';
  */
 
 export default function Filter({ setCourses }: FilterProps) {
-  const [courseFilter, setCourseFilter] = useState<null | Filters>(
-    exampleFilters,
-  );
+  //const [courseFilter, setCourseFilter] = useState<null | Filters>();
   const [curFilter, setCurFilter] = useState<FilterToSend>({
     degree: undefined,
     college: undefined,
@@ -39,24 +39,23 @@ export default function Filter({ setCourses }: FilterProps) {
   });
   const [filterCategory, setFilterCategory] = useState<Category>({
     degree: [CategoryPick.PICK, Degree.GRADUATE, Degree.UNDERGRADUATE],
-    college: [],
-    major: [],
+    colleges: [],
+    majors: [],
   });
-  /** 이 부분 useMemo 로 처리하고 싶은데 안되네요 */
-  /** 
+
   useEffect(() => {
     async function setFilter(): Promise<void> {
-      const response = await getFilters();
-      setCourseFilter(response);
+      const response = await getCollegesAndMajors();
+      setFilterCategory({
+        ...filterCategory,
+        majors: response.majors,
+        colleges: response.colleges,
+      });
     }
     setFilter();
   }, []);
-*/
-  console.log(filterCategory.degree);
 
-  return !courseFilter ? (
-    <div>Loading</div>
-  ) : (
+  return (
     <div className="filter">
       <select
         className="degree select"
@@ -64,15 +63,15 @@ export default function Filter({ setCourses }: FilterProps) {
           const curSelected = e.target.value as CategoryPick | Degree;
           if (curSelected === '학부' || curSelected === '대학원') {
             setCurFilter({ ...curFilter, degree: curSelected });
-            const college = courseFilter.degreeDict[curSelected];
-            setFilterCategory({ ...filterCategory, college: college });
+            // const college = courseFilter.degreeDict[curSelected];
+            // setFilterCategory({ ...filterCategory, college: college });
           } else {
             setCurFilter({ ...curFilter, degree: undefined });
-            setFilterCategory({
-              ...filterCategory,
-              college: [],
-              major: [],
-            });
+            // setFilterCategory({
+            //   ...filterCategory,
+            //   college: [],
+            //   major: [],
+            // });
           }
         }}
       >
@@ -81,42 +80,39 @@ export default function Filter({ setCourses }: FilterProps) {
         <option value={Degree.GRADUATE}>대학원</option>
       </select>
       <select
-        className="college select"
+        className="college"
         onChange={(e) => {
           const curSelected = e.target.value;
-          setCurFilter({ ...curFilter, college: curSelected });
           if (curSelected !== 'null') {
-            const major = courseFilter.collegeDict[curSelected];
-            setFilterCategory({ ...filterCategory, major: major });
+            setCurFilter({ ...curFilter, college: curSelected });
           } else {
-            setFilterCategory({
-              ...filterCategory,
-              major: [],
-            });
+            setCurFilter({ ...curFilter, college: undefined });
           }
         }}
       >
-        <option value="null">대학</option>
-        {filterCategory.college.map((name: string) => {
+        {filterCategory.colleges.map((college: string) => {
           return (
-            <option value={`${name}`} key={`${name}`}>
-              {name}
+            <option value={college} key={college}>
+              {college}
             </option>
           );
         })}
       </select>
       <select
-        className="major select"
+        className="major"
         onChange={(e) => {
           const curSelected = e.target.value;
-          setCurFilter({ ...curFilter, major: curSelected });
+          if (curSelected !== 'null') {
+            setCurFilter({ ...curFilter, major: curSelected });
+          } else {
+            setCurFilter({ ...curFilter, major: undefined });
+          }
         }}
       >
-        <option value="null">학과</option>
-        {filterCategory.major.map((name) => {
+        {filterCategory.majors.map((major: string) => {
           return (
-            <option value={`${name}`} key={`${name}`}>
-              {name}
+            <option value={major} key={major}>
+              {major}
             </option>
           );
         })}
@@ -137,3 +133,47 @@ export default function Filter({ setCourses }: FilterProps) {
     </div>
   );
 }
+
+/** 
+<select
+className="college select"
+onChange={(e) => {
+  const curSelected = e.target.value;
+  setCurFilter({ ...curFilter, college: curSelected });
+  if (curSelected !== 'null') {
+    const major = courseFilter.collegeDict[curSelected];
+    setFilterCategory({ ...filterCategory, major: major });
+  } else {
+    setFilterCategory({
+      ...filterCategory,
+      major: [],
+    });
+  }
+}}
+>
+<option value="null">대학</option>
+{filterCategory.college.map((name: string) => {
+  return (
+    <option value={`${name}`} key={`${name}`}>
+      {name}
+    </option>
+  );
+})}
+</select>
+<select
+className="major select"
+onChange={(e) => {
+  const curSelected = e.target.value;
+  setCurFilter({ ...curFilter, major: curSelected });
+}}
+>
+<option value="null">학과</option>
+{filterCategory.major.map((name) => {
+  return (
+    <option value={`${name}`} key={`${name}`}>
+      {name}
+    </option>
+  );
+})}
+</select>
+*/
