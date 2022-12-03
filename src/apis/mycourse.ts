@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import { HOST_URL } from '@data/url';
 import { Course } from '@interfaces/Course';
-
 /**
  * 수강 신청
  */
@@ -45,4 +44,11 @@ export interface GetAppliedCoursesResponse extends Array<Course> {}
 
 // GET /course/mycourse
 // 해당 API 호출이 필요한 분이 구현해주세요.
-export const getAppliedCourses = () => null;
+
+export const getAppliedCourses =
+  async (): Promise<GetAppliedCoursesResponse> => {
+    const response = await axios.get<GetAppliedCoursesResponse>(
+      `${HOST_URL}/course/mycourse`,
+    );
+    return response.data;
+  };
