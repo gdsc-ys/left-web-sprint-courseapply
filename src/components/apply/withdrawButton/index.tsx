@@ -1,9 +1,8 @@
 import '@components/apply/withdrawButton/index.css';
 
-import { CourseForTable } from '@interfaces/Table';
-import { Course } from '@interfaces/Course';
-
 import { withdraw } from '@apis/mycourse';
+import { Course } from '@interfaces/Course';
+import { CourseForTable } from '@interfaces/Table';
 
 export default function WithdrawButton({
   coursesForTable,

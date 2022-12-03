@@ -1,14 +1,12 @@
 import '@components/apply/index.css';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Hooks, Column, CellProps, useTable, HeaderGroup } from 'react-table';
-
-import { CourseForTable } from '@interfaces/Table';
-import { Course } from '@interfaces/Course';
+import { CellProps, Column, HeaderGroup, Hooks, useTable } from 'react-table';
 
 import WithdrawButton from '@components/apply/withdrawButton';
-import { GetCoursesRequest } from '@/apis/course';
-import { WithdrawRequest } from '@/apis/mycourse';
+import { Course } from '@interfaces/Course';
+import { CourseForTable } from '@interfaces/Table';
+
 //import WithdrawButton from './applyButton';
 
 /**
@@ -122,11 +120,11 @@ export default function Apply({
         <tbody className="tableBody" {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
-            const { key, ...restTableBodyProps } = row.getRowProps({
+            const { key, ...restRowProps } = row.getRowProps({
               style: { height: '40px', textAlign: 'center' },
             });
             return (
-              <tr className="trow" key={key} {...restTableBodyProps}>
+              <tr className="trow" key={key} {...restRowProps}>
                 {row.cells.map((cell) => {
                   const { key, ...restCellProps } = cell.getCellProps();
                   return (

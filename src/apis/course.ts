@@ -48,6 +48,6 @@ export interface GetCollegesAndMajorsResponse {
 // 해당 API 호출이 필요한 분이 구현해주세요.
 export const getCollegesAndMajors =
   async (): Promise<GetCollegesAndMajorsResponse> => {
-    const response = await axios.get(`${HOST_URL}/colleges-and-majors`);
+    const response = await axios.get(`${HOST_URL}/course/colleges-and-majors`);
     return response.data;
   };

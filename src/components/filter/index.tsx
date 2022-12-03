@@ -1,22 +1,16 @@
 import '@components/filter/index.css';
 
-import axios from 'axios';
-
 import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { SlMagnifier } from 'react-icons/sl';
 
 import { getCollegesAndMajors, getCourses } from '@apis/course';
-import { exampleFilters } from '@data/examples';
-import { Course, Degree } from '@interfaces/Course';
+import { Degree } from '@interfaces/Course';
 import {
+  Category,
   CategoryPick,
   FilterProps,
-  Category,
-  Filters,
   FilterToSend,
 } from '@interfaces/Filter';
-
-import { SlMagnifier } from 'react-icons/sl';
 /**
   degreeDict = {
       "학부" : ["이과대학", "공과대학", "문과대학", "상경대학", "경영대학", "생활과학대학", ...],
