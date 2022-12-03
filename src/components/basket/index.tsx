@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useTable } from 'react-table';
+import { CellProps, Column, HeaderGroup, Hooks, useTable } from 'react-table';
 
 import { apply, ApplyRequest } from '@/apis/mycourse';
 import { Course } from '@/interfaces/Course';
@@ -9,9 +9,10 @@ import { courses } from '@data/examples';
 
 interface Props {
   basket: string[];
+  setBasket: (basket: string[]) => void;
 }
 
-export default function Basket({ basket }: Props) {
+export default function Basket({ basket, setBasket }: Props) {
   const handleApply = (courseIndex: number) => {
     const coursetoApply: ApplyRequest = {
       id: basket[courseIndex],
@@ -29,7 +30,7 @@ export default function Basket({ basket }: Props) {
       }
     }
     localStorage.setItem('basket', JSON.stringify(newBasket));
-    basket = newBasket;
+    setBasket(newBasket);
   };
 
   console.log(basket);
@@ -84,36 +85,84 @@ export default function Basket({ basket }: Props) {
   const data = useMemo(() => basketTableCourses, [basket]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    useTable({ columns, data });
+    useTable<CourseForTable>(
+      { columns, data },
+      (hooks: Hooks<CourseForTable>) => {
+        hooks.allColumns.push((columns) => [
+          {
+            id: 'checkbox',
+            Header: () => <div>{'Select'}</div>,
+            Cell: ({ row }: CellProps<CourseForTable>) => {
+              return <input type="checkbox" id="basketcheck"></input>;
+            },
+          },
+          ...columns,
+        ]);
+      },
+      (hooks: Hooks<CourseForTable>) => {
+        hooks.allColumns.push((columns) => [
+          ...columns,
+          {
+            id: 'applybutton',
+            Header: () => <div>{'Apply'}</div>,
+            Cell: ({ row }: CellProps<CourseForTable>) => {
+              return (
+                <button onClick={() => handleApply(row.index)}>Apply</button>
+              );
+            },
+          },
+        ]);
+      },
+      (hooks: Hooks<CourseForTable>) => {
+        hooks.allColumns.push((columns) => [
+          ...columns,
+          {
+            id: 'deletebutton',
+            Header: () => <div>{'Delete'}</div>,
+            Cell: ({ row }: CellProps<CourseForTable>) => {
+              return (
+                <button onClick={() => handleDelete(row.index)}>Delete</button>
+              );
+            },
+          },
+        ]);
+      },
+    );
 
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map((headerGroup) => (
-          // eslint-disable-next-line react/jsx-key
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              // eslint-disable-next-line react/jsx-key
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-            ))}
-          </tr>
-        ))}
+        {headerGroups.map((headerGroup) => {
+          const { key, ...restHeaderGroupProps } =
+            headerGroup.getHeaderGroupProps();
+          return (
+            <tr key={key} {...restHeaderGroupProps}>
+              {headerGroup.headers.map((column) => {
+                const { key, ...restHeaderProps } = column.getHeaderProps();
+                return (
+                  <th key={key} {...restHeaderProps}>
+                    {column.render('Header')}
+                  </th>
+                );
+              })}
+            </tr>
+          );
+        })}
       </thead>
       <tbody {...getTableBodyProps()}>
         {rows.map((row) => {
           prepareRow(row);
+          const { key, ...restRowProps } = row.getRowProps();
           return (
-            // eslint-disable-next-line react/jsx-key
-            <tr {...row.getRowProps()}>
-              <input type="checkbox" id="basketcheck"></input>
-              {row.cells.map((cell) => (
-                // eslint-disable-next-line react/jsx-key
-                <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-              ))}
-              <button onClick={() => handleApply(row.index)}>Apply</button>
-              <button onClick={() => handleDelete(row.index)}>Delete</button>
+            <tr key={key} {...restRowProps}>
+              {row.cells.map((cell) => {
+                const { key, ...restCellProps } = cell.getCellProps();
+                return (
+                  <td key={key} {...restCellProps}>
+                    {cell.render('Cell')}
+                  </td>
+                );
+              })}
             </tr>
           );
         })}

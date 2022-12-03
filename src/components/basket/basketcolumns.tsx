@@ -1,8 +1,8 @@
-export const columnData = [
-  {
-    accessor: 'select',
-    Header: 'Select',
-  },
+import { Column } from 'react-table';
+
+import { CourseForTable } from '@/interfaces/Table';
+
+export const columnData: Column<CourseForTable>[] = [
   {
     accessor: 'id',
     Header: 'ID',
@@ -42,13 +42,5 @@ export const columnData = [
   {
     accessor: 'credit',
     Header: 'Credit',
-  },
-  {
-    accessor: 'apply',
-    Header: 'Apply',
-  },
-  {
-    accessor: 'delete',
-    Header: 'Delete',
   },
 ];
