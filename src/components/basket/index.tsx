@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { CellProps, Column, HeaderGroup, Hooks, useTable } from 'react-table';
+import { check } from 'prettier';
 
 import { apply, ApplyRequest } from '@/apis/mycourse';
 import { Course } from '@/interfaces/Course';
@@ -14,26 +15,57 @@ interface Props {
 
 export default function Basket({ basket, setBasket }: Props) {
   const handleApply = (courseIndex: number) => {
+    const tempBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
+    // console.log(tempBasket);
     const coursetoApply: ApplyRequest = {
-      id: basket[courseIndex],
+      id: tempBasket[courseIndex],
     };
     apply(coursetoApply);
   };
 
   const handleDelete = (courseIndex: number) => {
-    const courseId = basket[courseIndex];
-    console.log(courseId);
-    const newBasket: string[] = basket.filter((id) => id != courseId);
+    const tempBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
+    // console.log(courseIndex);
+    // console.log(tempBasket);
+    const courseId = tempBasket[courseIndex];
+    // console.log(courseId);
+    const newBasket: string[] = tempBasket.filter(
+      (id: number) => id != courseId,
+    );
+    // console.log(newBasket);
     for (let i = 0; i < basketTableCourses.length; i++) {
       if (basketTableCourses[i].id == courseId) {
         basketTableCourses.splice(i, 1);
       }
     }
+    // console.log(basketTableCourses);
     localStorage.setItem('basket', JSON.stringify(newBasket));
     setBasket(newBasket);
+    // console.log(newBasket);
+  };
+  const checkedList: number[] = [];
+
+  const handleCheck = (courseIndex: number) => {
+    if (checkedList.includes(courseIndex)) {
+      checkedList.splice(checkedList.indexOf(courseIndex), 1);
+    } else {
+      checkedList.push(courseIndex);
+    }
+    console.log(checkedList);
   };
 
-  console.log(basket);
+  const handleApplyAll = () => {
+    const tempBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
+    checkedList.map((courseIndex) => {
+      console.log(courseIndex);
+      const coursetoApply: ApplyRequest = {
+        id: tempBasket[courseIndex],
+      };
+      apply(coursetoApply);
+    });
+  };
+
+  // console.log(basket);
 
   const filteredCourse: Course[] = [];
   for (let i = 0; i < basket.length; i++) {
@@ -43,7 +75,7 @@ export default function Basket({ basket, setBasket }: Props) {
       }
     }
   }
-  console.log(filteredCourse);
+  // console.log(filteredCourse);
 
   const basketTableCourses: CourseForTable[] = [];
   for (let i = 0; i < filteredCourse.length; i++) {
@@ -51,7 +83,7 @@ export default function Basket({ basket, setBasket }: Props) {
     for (let j = 0; j < filteredCourse[i].times.length; j++) {
       courseTime += `[${filteredCourse[i].times[j].dayOfWeek} ${filteredCourse[i].times[j].startPeriod}-${filteredCourse[i].times[j].endPeriod}]`;
     }
-    console.log(courseTime);
+    // console.log(courseTime);
     const {
       classroom,
       college,
@@ -79,7 +111,7 @@ export default function Basket({ basket, setBasket }: Props) {
 
     basketTableCourses.push(example);
   }
-  console.log(basketTableCourses);
+  // console.log(basketTableCourses);
 
   const columns = useMemo(() => columnData, []);
   const data = useMemo(() => basketTableCourses, [basket]);
@@ -93,7 +125,13 @@ export default function Basket({ basket, setBasket }: Props) {
             id: 'checkbox',
             Header: () => <div>{'Select'}</div>,
             Cell: ({ row }: CellProps<CourseForTable>) => {
-              return <input type="checkbox" id="basketcheck"></input>;
+              return (
+                <input
+                  type="checkbox"
+                  id="basketcheck"
+                  onClick={() => handleCheck(row.index)}
+                ></input>
+              );
             },
           },
           ...columns,
@@ -168,7 +206,7 @@ export default function Basket({ basket, setBasket }: Props) {
         })}
       </tbody>
       <tfoot>
-        <button>전체 신청</button>
+        <button onClick={() => handleApplyAll()}>전체 신청</button>
       </tfoot>
     </table>
   );
