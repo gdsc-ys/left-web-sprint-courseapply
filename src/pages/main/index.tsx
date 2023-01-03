@@ -17,32 +17,30 @@ export default function Main() {
   const [preferredCourses, setPreferredCourses] = useState<Course['id'][]>();
   const [appliedCourses, setAppliedCourses] = useState<Course[]>();
 
-  /** 
-  const getCourses = useCallback(async () => {
-    setCourses(undefined);
+  // const getCourses = useCallback(async () => {
+  //   setCourses([]);
 
-    const courses = courseExample;
+  //   const courses = courseExample;
 
-    setCourses(courses);
-    setAppliedCourses(courses);
-  }, []);
+  //   setCourses(courses);
+  //   setAppliedCourses(courses);
+  // }, []);
 
-  useEffect(() => {
-    getCourses();
-  }, []);
- */
+  // useEffect(() => {
+  //   getCourses();
+  // }, []);
 
-  const getAppliedCourses = useCallback(async () => {
-    setAppliedCourses(undefined);
+  // const getAppliedCourses = useCallback(async () => {
+  //   setAppliedCourses(undefined);
 
-    const courses = await getAppliedCourse();
+  //   const courses = await getAppliedCourse();
 
-    setAppliedCourses(courses);
-  }, []);
+  //   setAppliedCourses(courses);
+  // }, []);
 
-  useEffect(() => {
-    getAppliedCourses();
-  }, []);
+  // useEffect(() => {
+  //   getAppliedCourses();
+  // }, []);
 
   return (
     <div>
@@ -50,7 +48,7 @@ export default function Main() {
       {courses ? (
         <>
           <Filter setCourses={setCourses} />
-          <Courses />
+          <Courses courses={courses} />
           <Basket />
           <Apply
             appliedCourses={appliedCourses}
