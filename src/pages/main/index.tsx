@@ -15,26 +15,9 @@ import { Course } from '@interfaces/Course';
 export default function Main() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [preferredCourses, setPreferredCourses] = useState<Course['id'][]>();
-  const [appliedCourses, setAppliedCourses] = useState<Course[]>();
-
-  /** 
-  const getCourses = useCallback(async () => {
-    setCourses(undefined);
-
-    const courses = courseExample;
-
-    setCourses(courses);
-    setAppliedCourses(courses);
-  }, []);
-
-  useEffect(() => {
-    getCourses();
-  }, []);
- */
+  const [appliedCourses, setAppliedCourses] = useState<Course[]>([]);
 
   const getAppliedCourses = useCallback(async () => {
-    setAppliedCourses(undefined);
-
     const courses = await getAppliedCourse();
 
     setAppliedCourses(courses);

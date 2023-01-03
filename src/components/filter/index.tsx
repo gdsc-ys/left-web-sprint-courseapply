@@ -11,18 +11,6 @@ import {
   FilterProps,
   FilterToSend,
 } from '@interfaces/Filter';
-/**
-  degreeDict = {
-      "학부" : ["이과대학", "공과대학", "문과대학", "상경대학", "경영대학", "생활과학대학", ...],
-      "대학원" : ["음"]
-    }
-  collegeDict = {
-    "이과대학" : ["공통", "물리학과", "수학과", "천문우주학과", "대기과학과", ...],
-    "공과대학" : ["공통", "전기전자공학", "도시공학", "신소재공학과", ...],
-    ...
-  } 
-
- */
 
 export default function Filter({ setCourses }: FilterProps) {
   //const [courseFilter, setCourseFilter] = useState<null | Filters>();
@@ -57,15 +45,8 @@ export default function Filter({ setCourses }: FilterProps) {
           const curSelected = e.target.value as CategoryPick | Degree;
           if (curSelected === '학부' || curSelected === '대학원') {
             setCurFilter({ ...curFilter, degree: curSelected });
-            // const college = courseFilter.degreeDict[curSelected];
-            // setFilterCategory({ ...filterCategory, college: college });
           } else {
             setCurFilter({ ...curFilter, degree: undefined });
-            // setFilterCategory({
-            //   ...filterCategory,
-            //   college: [],
-            //   major: [],
-            // });
           }
         }}
       >
@@ -74,7 +55,7 @@ export default function Filter({ setCourses }: FilterProps) {
         <option value={Degree.GRADUATE}>대학원</option>
       </select>
       <select
-        className="college"
+        className="college select"
         onChange={(e) => {
           const curSelected = e.target.value;
           if (curSelected !== 'null') {
@@ -93,7 +74,7 @@ export default function Filter({ setCourses }: FilterProps) {
         })}
       </select>
       <select
-        className="major"
+        className="major select"
         onChange={(e) => {
           const curSelected = e.target.value;
           if (curSelected !== 'null') {

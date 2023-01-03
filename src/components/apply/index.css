@@ -1,5 +1,5 @@
 .apply-table {
-  border-top: 10px;
+  margin-top: 10px;
 }
 
 .table-head {
@@ -9,5 +9,4 @@
 
 .thead {
   padding: 10px;
-
 }

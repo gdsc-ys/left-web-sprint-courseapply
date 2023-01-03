@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { Course } from '@interfaces/Course';
+
 import { HOST_URL } from '@data/url';
+import { Course } from '@interfaces/Course';
 
 /**
  * 강의 목록 가져오기
@@ -12,13 +13,9 @@ export interface GetCoursesResponse extends Array<Course> {}
 
 // GET '/course'
 // 해당 API 호출이 필요한 분이 구현해주세요.
-export const getCourses = async (curFilter: GetCoursesRequest) => {
-  const response = await axios.get(`${HOST_URL}/course`, {
-    params: {
-      degree: curFilter.degree,
-      college: curFilter.college,
-      major: curFilter.major,
-    },
+export const getCourses = async (params: GetCoursesRequest) => {
+  const response = await axios.get<GetCoursesResponse>(`${HOST_URL}/course`, {
+    params,
   });
   return response.data;
 };
@@ -48,6 +45,9 @@ export interface GetCollegesAndMajorsResponse {
 // 해당 API 호출이 필요한 분이 구현해주세요.
 export const getCollegesAndMajors =
   async (): Promise<GetCollegesAndMajorsResponse> => {
-    const response = await axios.get(`${HOST_URL}/course/colleges-and-majors`);
+    const response = await axios.get<GetCollegesAndMajorsResponse>(
+      `${HOST_URL}/course/colleges-and-majors`,
+    );
+
     return response.data;
   };

@@ -1,7 +1,7 @@
 import '@components/apply/index.css';
 
 import { useEffect, useMemo, useState } from 'react';
-import { CellProps, Column, HeaderGroup, Hooks, useTable } from 'react-table';
+import { CellProps, Column, HeaderGroup, useTable } from 'react-table';
 
 import WithdrawButton from '@components/apply/withdrawButton';
 import { Course } from '@interfaces/Course';
@@ -13,38 +13,62 @@ import { CourseForTable } from '@interfaces/Table';
  * 신청 목록 리스트
  */
 
+interface ApplyInterface {
+  appliedCourses: Course[];
+  setAppliedCourses: (appliedCourses: Course[]) => void;
+}
+
 export default function Apply({
   appliedCourses,
   setAppliedCourses,
-}: {
-  appliedCourses: Course[] | undefined;
-  setAppliedCourses: (appliedCourses: Course[] | undefined) => void;
-}) {
-  const [data, setData] = useState<CourseForTable[]>([]);
+}: ApplyInterface) {
+  interface CourseForApplyTable extends CourseForTable {
+    withdraw: string;
+  }
+
+  const [data, setData] = useState<CourseForApplyTable[]>([]);
 
   useEffect(() => {
-    const newCourses = appliedCourses?.map((course: Course) => {
-      const timesToString = course.times.reduce((acc, cur, idx) => {
-        acc += `[${cur.dayOfWeek.slice(0, 1)}${cur.startPeriod},${
-          cur.endPeriod
-        }]`;
-        if (idx != course.times.length - 1) {
-          acc += ',';
-        }
-        return acc;
-      }, '');
-      return {
-        ...course,
-        times: timesToString,
-      };
-    });
+    const newCourses: Array<CourseForApplyTable> = appliedCourses?.map(
+      (course: Course) => {
+        const timesToArray: string[] = course.times.reduce(
+          (acc: string[], cur) => {
+            acc.push(
+              `[${cur.dayOfWeek.slice(0, 1)}${cur.startPeriod}${
+                cur.endPeriod
+              }]`,
+            );
+            return acc;
+          },
+          [],
+        );
+        const timesToString = timesToArray.join();
+        return {
+          ...course,
+          times: timesToString,
+          withdraw: '',
+        };
+      },
+    );
     if (newCourses) {
       setData(newCourses);
     }
   }, []);
 
-  const columns = useMemo<Column<CourseForTable>[]>(() => {
+  const columns = useMemo<Array<Column<CourseForApplyTable>>>(() => {
     return [
+      {
+        Header: '취소',
+        accessor: 'withdraw',
+        Cell: ({ row }: CellProps<CourseForApplyTable>) => {
+          return (
+            <WithdrawButton
+              coursesForTable={row.original}
+              setAppliedCourses={setAppliedCourses}
+            />
+          );
+        },
+      },
       { Header: '학정번호', accessor: 'id' },
       { Header: '과목명', accessor: 'name' },
       { Header: '학위', accessor: 'degree' },
@@ -59,30 +83,7 @@ export default function Apply({
   }, []);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<CourseForTable>(
-      { columns, data },
-      (hooks: Hooks<CourseForTable>) => {
-        hooks.allColumns.push((columns) => [
-          {
-            id: 'withdraw',
-            disableResizing: true,
-            minWidth: 100,
-            width: 100,
-            maxWidth: 100,
-            Header: () => <div>{'취소'}</div>,
-            Cell: ({ row }: CellProps<CourseForTable>) => {
-              return (
-                <WithdrawButton
-                  coursesForTable={row.original}
-                  setAppliedCourses={setAppliedCourses}
-                />
-              );
-            },
-          },
-          ...columns,
-        ]);
-      },
-    );
+    useTable<CourseForApplyTable>({ data, columns });
   return (
     <div className="apply-table">
       <table
@@ -96,7 +97,7 @@ export default function Apply({
         })}
       >
         <thead className="table-head">
-          {headerGroups.map((headerGroup: HeaderGroup<CourseForTable>) => {
+          {headerGroups.map((headerGroup: HeaderGroup<CourseForApplyTable>) => {
             const { key, ...restHeaderGroupProps } =
               headerGroup.getHeaderGroupProps({
                 style: {
