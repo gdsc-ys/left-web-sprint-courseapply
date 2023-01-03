@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { CellProps, Column, HeaderGroup, Hooks, useTable } from 'react-table';
 import { check } from 'prettier';
 
@@ -21,7 +21,6 @@ export default function Basket({
 }: Props) {
   const handleApply = async (courseIndex: number) => {
     const tempBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
-    // console.log(tempBasket);
     const coursetoApply: ApplyRequest = {
       id: tempBasket[courseIndex],
     };
@@ -29,25 +28,23 @@ export default function Basket({
     setAppliedCourses(newAppliedCourses);
   };
 
+  /**
+   함수는 useCallback 감싸세요!
+   */
+
   const handleDelete = (courseIndex: number) => {
     const tempBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
-    // console.log(courseIndex);
-    // console.log(tempBasket);
     const courseId = tempBasket[courseIndex];
-    // console.log(courseId);
     const newBasket: string[] = tempBasket.filter(
       (id: number) => id != courseId,
     );
-    // console.log(newBasket);
     for (let i = 0; i < basketTableCourses.length; i++) {
       if (basketTableCourses[i].id == courseId) {
         basketTableCourses.splice(i, 1);
       }
     }
-    // console.log(basketTableCourses);
     localStorage.setItem('basket', JSON.stringify(newBasket));
     setBasket(newBasket);
-    // console.log(newBasket);
   };
 
   const checkedList: number[] = [];
@@ -58,13 +55,11 @@ export default function Basket({
     } else {
       checkedList.push(courseIndex);
     }
-    console.log(checkedList);
   };
 
   const handleApplyAll = async () => {
     const tempBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
     checkedList.map(async (courseIndex) => {
-      console.log(courseIndex);
       const coursetoApply: ApplyRequest = {
         id: tempBasket[courseIndex],
       };
@@ -72,9 +67,9 @@ export default function Basket({
       setAppliedCourses(newAppliedCourses);
     });
   };
-
-  // console.log(basket);
-
+  /**
+   id list 에 디펜던시를 가집니다. 그죠? 그거에 맞춰서 수정하세요. useMemo or useEffect 잘쓰기, for 중첩 없애보자!
+   */
   const filteredCourse: Course[] = [];
   for (let i = 0; i < basket.length; i++) {
     for (let j = 0; j < courses.length; j++) {
@@ -83,7 +78,6 @@ export default function Basket({
       }
     }
   }
-  // console.log(filteredCourse);
 
   const basketTableCourses: CourseForTable[] = [];
   for (let i = 0; i < filteredCourse.length; i++) {
@@ -91,7 +85,7 @@ export default function Basket({
     for (let j = 0; j < filteredCourse[i].times.length; j++) {
       courseTime += `[${filteredCourse[i].times[j].dayOfWeek} ${filteredCourse[i].times[j].startPeriod}-${filteredCourse[i].times[j].endPeriod}]`;
     }
-    // console.log(courseTime);
+
     const {
       classroom,
       college,
