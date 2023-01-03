@@ -18,16 +18,16 @@ interface Props {
 export default function Courses({ courses }: { courses: Course[] }) {
   const columns = useMemo<Column<CourseForTable>[]>(() => {
     return [
-      { Header: '학정번호', accessor: 'id' },
-      { Header: '과목명', accessor: 'name' },
-      { Header: '학위', accessor: 'degree' },
-      { Header: '학부', accessor: 'college' },
-      { Header: '전공', accessor: 'major' },
-      { Header: '교수명', accessor: 'professor' },
-      { Header: '강의 시간', accessor: 'times' },
-      { Header: '강의실', accessor: 'classroom' },
-      { Header: '정원', accessor: 'personnel' },
-      { Header: '학점', accessor: 'credit' },
+      { accessor: 'id', Header: '학정번호' },
+      { accessor: 'name', Header: '과목명' },
+      { accessor: 'degree', Header: '학위' },
+      { accessor: 'college', Header: '학부' },
+      { accessor: 'major', Header: '전공' },
+      { accessor: 'professor', Header: '교수명' },
+      { accessor: 'times', Header: '강의 시간' },
+      { accessor: 'classroom', Header: '강의실' },
+      { accessor: 'personnel', Header: '정원' },
+      { accessor: 'credit', Header: '학점' },
     ];
   }, []);
   const [data, setData] = useState<CourseForTable[]>([]);
@@ -56,21 +56,19 @@ export default function Courses({ courses }: { courses: Course[] }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable<CourseForTable>(
       { columns, data },
-      (hook: Hooks<CourseForTable>) => {
-        hook.allColumns.push((columns) => [
+      useRowSelect,
+      (hooks: Hooks<CourseForTable>) => {
+        hooks.visibleColumns.push((columns) => [
           {
             id: 'preferred',
             Header: () => <div>{'추가'}</div>,
-            Cell: ({ row }: CellProps<CourseForTable>) => {
-              console.log(row.cells[1].value);
-              return (
-                <div>
-                  {/* <button onClick={() => handleAddBasket(row.cells[1].value)}>Add</button> */}
-                  {/* 위 버튼은 주석 풀고, 아래 버튼은 삭제해서 사용하면 됨 */}
-                  <button>Add</button>
-                </div>
-              );
-            },
+            Cell: ({ row }: CellProps<CourseForTable>) => (
+              <div>
+                {/* <button onClick={() => handleAddBasket(row.cells[1].value)}>Add</button> */}
+                {/* 위 버튼은 주석 풀고, 아래 버튼은 삭제해서 사용하면 됨 */}
+                <button>Add</button>
+              </div>
+            ),
           },
           ...columns,
         ]);
