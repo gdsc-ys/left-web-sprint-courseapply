@@ -3,6 +3,8 @@
 # dependencies
 /node_modules
 /.pnp
+yarn.lock
+package.json
 .pnp.js
 
 # testing
@@ -23,5 +25,3 @@ yarn-debug.log*
 yarn-error.log*
 
 
-yarn.lock
-package.json
