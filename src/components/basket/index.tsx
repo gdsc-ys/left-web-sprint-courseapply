@@ -11,16 +11,22 @@ import { courses } from '@data/examples';
 interface Props {
   basket: string[];
   setBasket: (basket: string[]) => void;
+  setAppliedCourses: (appliedCourses: Array<Course>) => void;
 }
 
-export default function Basket({ basket, setBasket }: Props) {
-  const handleApply = (courseIndex: number) => {
+export default function Basket({
+  basket,
+  setBasket,
+  setAppliedCourses,
+}: Props) {
+  const handleApply = async (courseIndex: number) => {
     const tempBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
     // console.log(tempBasket);
     const coursetoApply: ApplyRequest = {
       id: tempBasket[courseIndex],
     };
-    apply(coursetoApply);
+    const newAppliedCourses = await apply(coursetoApply);
+    setAppliedCourses(newAppliedCourses);
   };
 
   const handleDelete = (courseIndex: number) => {
@@ -43,6 +49,7 @@ export default function Basket({ basket, setBasket }: Props) {
     setBasket(newBasket);
     // console.log(newBasket);
   };
+
   const checkedList: number[] = [];
 
   const handleCheck = (courseIndex: number) => {
@@ -54,14 +61,15 @@ export default function Basket({ basket, setBasket }: Props) {
     console.log(checkedList);
   };
 
-  const handleApplyAll = () => {
+  const handleApplyAll = async () => {
     const tempBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
-    checkedList.map((courseIndex) => {
+    checkedList.map(async (courseIndex) => {
       console.log(courseIndex);
       const coursetoApply: ApplyRequest = {
         id: tempBasket[courseIndex],
       };
-      apply(coursetoApply);
+      const newAppliedCourses = await apply(coursetoApply);
+      setAppliedCourses(newAppliedCourses);
     });
   };
 

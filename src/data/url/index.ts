@@ -1,1 +1,1 @@
-export const HOST_URL = 'https://course-apply/namoo.dev';
+export const HOST_URL = 'https://course-apply.namoo.dev';

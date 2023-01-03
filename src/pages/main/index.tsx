@@ -50,7 +50,11 @@ export default function Main() {
         <>
           <Filter />
           <Courses handleAddBasket={handleAddBasket} />
-          <Basket basket={basket} setBasket={setBasket} />
+          <Basket
+            basket={basket}
+            setBasket={setBasket}
+            setAppliedCourses={setAppliedCourses}
+          />
         </>
       ) : (
         <div>loading...</div>
