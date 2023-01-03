@@ -3,12 +3,11 @@
 # dependencies
 /node_modules
 /.pnp
-/yarn.lock
-/package.json
 .pnp.js
 
 # testing
 /coverage
+
 
 # production
 /build
