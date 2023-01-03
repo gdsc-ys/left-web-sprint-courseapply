@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 export default function Default() {
   return (
     <div>
-      <Link to="/login">
-        <div>login!</div>
+      <Link to="/main">
+        <div>main!</div>
       </Link>
     </div>
   );

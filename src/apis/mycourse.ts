@@ -14,7 +14,9 @@ export const apply = async (course: ApplyRequest): Promise<ApplyResponse> => {
     `${HOST_URL}/course/mycourse`,
     course,
   );
-
+  setTimeout(() => {
+    console.log(response.data);
+  }, 0);
   return response.data;
 };
 

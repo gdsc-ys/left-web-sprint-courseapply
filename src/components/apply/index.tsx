@@ -53,7 +53,7 @@ export default function Apply({
     if (newCourses) {
       setData(newCourses);
     }
-  }, []);
+  }, [appliedCourses]);
 
   const columns = useMemo<Array<Column<CourseForApplyTable>>>(() => {
     return [
