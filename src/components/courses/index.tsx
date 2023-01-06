@@ -1,15 +1,8 @@
 import '@components/courses/index.css';
-import { Course } from '@interfaces/Course';
+import { Course, CourseTime } from '@interfaces/Course';
 import { CourseForTable } from '@interfaces/Table';
 import { useEffect, useState, useMemo } from 'react';
-import {
-  useTable,
-  CellProps,
-  Column,
-  HeaderGroup,
-  Hooks,
-  useRowSelect,
-} from 'react-table';
+import { useTable, CellProps, Column, HeaderGroup } from 'react-table';
 
 interface Props {
   handleAddBasket: (courseId: string) => void;
@@ -18,6 +11,17 @@ interface Props {
 export default function Courses({ courses }: { courses: Course[] }) {
   const columns = useMemo<Column<CourseForTable>[]>(() => {
     return [
+      {
+        id: 'preferred',
+        Header: () => <div>{'추가'}</div>,
+        Cell: ({ row }: CellProps<CourseForTable>) => (
+          <div>
+            {/* <button onClick={() => handleAddBasket(row.cells[1].value)}>Add</button> */}
+            {/* 위 버튼은 주석 풀고, 아래 버튼은 삭제해서 사용하면 됨 */}
+            <button>Add</button>
+          </div>
+        ),
+      },
       { accessor: 'id', Header: '학정번호' },
       { accessor: 'name', Header: '과목명' },
       { accessor: 'degree', Header: '학위' },
@@ -33,17 +37,18 @@ export default function Courses({ courses }: { courses: Course[] }) {
   const [data, setData] = useState<CourseForTable[]>([]);
 
   useEffect(() => {
-    console.log(courses);
     const newCourses = courses.map((course: Course) => {
-      const newTimes =
-        course.times[0].dayOfWeek +
-        ' ' +
-        course.times[0].startPeriod +
-        '교시, ' +
-        course.times[1].dayOfWeek +
-        ' ' +
-        course.times[1].startPeriod +
-        '교시';
+      const newTimesArr = course.times.map((schedule: CourseTime) => {
+        return (
+          schedule.dayOfWeek +
+          ' ' +
+          schedule.startPeriod +
+          '교시-' +
+          schedule.endPeriod +
+          '교시'
+        );
+      });
+      const newTimes = newTimesArr.join(', ');
 
       return {
         ...course,
@@ -54,26 +59,8 @@ export default function Courses({ courses }: { courses: Course[] }) {
   }, [courses]);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<CourseForTable>(
-      { columns, data },
-      useRowSelect,
-      (hooks: Hooks<CourseForTable>) => {
-        hooks.visibleColumns.push((columns) => [
-          {
-            id: 'preferred',
-            Header: () => <div>{'추가'}</div>,
-            Cell: ({ row }: CellProps<CourseForTable>) => (
-              <div>
-                {/* <button onClick={() => handleAddBasket(row.cells[1].value)}>Add</button> */}
-                {/* 위 버튼은 주석 풀고, 아래 버튼은 삭제해서 사용하면 됨 */}
-                <button>Add</button>
-              </div>
-            ),
-          },
-          ...columns,
-        ]);
-      },
-    );
+    useTable<CourseForTable>({ columns, data });
+
   return (
     <div>
       <table {...getTableProps()}>
