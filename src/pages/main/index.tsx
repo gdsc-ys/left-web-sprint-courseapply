@@ -44,13 +44,14 @@ export default function Main() {
     setBasket(newBasket);
   };
 
+
   return (
     <div>
       <Header />
       {courses ? (
         <>
           <Filter setCourses={setCourses} />
-          <Courses handleAddBasket={handleAddBasket} />
+          <Courses courses={courses} handleAddBasket={handleAddBasket} />
           <Basket
             basket={basket}
             setBasket={setBasket}
