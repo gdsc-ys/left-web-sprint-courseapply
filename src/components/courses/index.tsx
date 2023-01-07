@@ -4,10 +4,11 @@ import { CourseForTable } from '@interfaces/Table';
 import { useEffect, useState, useMemo } from 'react';
 import { useTable, CellProps, Column, HeaderGroup } from 'react-table';
 
-interface Props {
+interface CoursesProps {
+  courses: Course[];
   handleAddBasket: (courseId: string) => void;
 }
-export default function Courses({ courses }: { courses: Course[] }) {
+export default function Courses({ courses, handleAddBasket }: CoursesProps) {
   const columns = useMemo<Column<CourseForTable>[]>(() => {
     return [
       {
@@ -15,8 +16,9 @@ export default function Courses({ courses }: { courses: Course[] }) {
         Header: () => <div>{'추가'}</div>,
         Cell: ({ row }: CellProps<CourseForTable>) => (
           <div>
-            {/* <button onClick={() => handleAddBasket(row.cells[1].value)}>Add</button> */}
-            {/* 위 버튼은 주석 풀고, 아래 버튼은 삭제해서 사용하면 됨 */}
+            <button onClick={() => handleAddBasket(row.cells[1].value)}>
+              Add
+            </button>
             <button>Add</button>
           </div>
         ),

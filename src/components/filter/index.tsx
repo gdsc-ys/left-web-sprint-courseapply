@@ -96,6 +96,7 @@ export default function Filter({ setCourses }: FilterProps) {
         className="request-course"
         type="submit"
         onClick={async () => {
+          console.log(curFilter);
           const response = await getCourses(curFilter);
           if (response === null) {
             alert('rerererere');

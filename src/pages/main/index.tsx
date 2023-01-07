@@ -44,7 +44,6 @@ export default function Main() {
     setBasket(newBasket);
   };
 
-
   return (
     <div>
       <Header />
