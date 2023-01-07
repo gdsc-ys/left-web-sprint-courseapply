@@ -15,32 +15,35 @@ import { Course } from '@interfaces/Course';
 export default function Main() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [preferredCourses, setPreferredCourses] = useState<Course['id'][]>();
-  const [appliedCourses, setAppliedCourses] = useState<Course[]>();
+  const [appliedCourses, setAppliedCourses] = useState<Course[]>([]);
 
-  // const getCourses = useCallback(async () => {
-  //   setCourses([]);
+  const getAppliedCourses = useCallback(async () => {
+    const courses = await getAppliedCourse();
 
-  //   const courses = courseExample;
+    setAppliedCourses(courses);
+  }, []);
 
-  //   setCourses(courses);
-  //   setAppliedCourses(courses);
-  // }, []);
+  useEffect(() => {
+    getAppliedCourses();
+  }, []);
 
-  // useEffect(() => {
-  //   getCourses();
-  // }, []);
+  const savedBasket = JSON.parse(localStorage.getItem('basket') ?? '[]');
 
-  // const getAppliedCourses = useCallback(async () => {
-  //   setAppliedCourses(undefined);
+  const [basket, setBasket] = useState<string[]>(savedBasket);
 
-  //   const courses = await getAppliedCourse();
+  const handleAddBasket = (courseId: string) => {
+    const duplicatedCourse = basket.find((course) => course === courseId);
 
-  //   setAppliedCourses(courses);
-  // }, []);
+    if (duplicatedCourse) {
+      alert('이미 존재하는 강의입니다');
+      return;
+    }
 
-  // useEffect(() => {
-  //   getAppliedCourses();
-  // }, []);
+    const newBasket = [...basket, courseId];
+    localStorage.setItem('basket', JSON.stringify(newBasket));
+    setBasket(newBasket);
+  };
+
 
   return (
     <div>
@@ -48,12 +51,16 @@ export default function Main() {
       {courses ? (
         <>
           <Filter setCourses={setCourses} />
-          <Courses courses={courses} />
-          <Basket />
+          <Courses courses={courses} handleAddBasket={handleAddBasket} />
+          <Basket
+            basket={basket}
+            setBasket={setBasket}
+            setAppliedCourses={setAppliedCourses}
+          />
           <Apply
             appliedCourses={appliedCourses}
             setAppliedCourses={setAppliedCourses}
-          />
+          ></Apply>
         </>
       ) : (
         <div>loading...</div>

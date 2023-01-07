@@ -7,7 +7,6 @@ import { useTable, CellProps, Column, HeaderGroup } from 'react-table';
 interface Props {
   handleAddBasket: (courseId: string) => void;
 }
-
 export default function Courses({ courses }: { courses: Course[] }) {
   const columns = useMemo<Column<CourseForTable>[]>(() => {
     return [
